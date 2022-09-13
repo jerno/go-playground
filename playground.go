@@ -17,6 +17,7 @@ import (
 	"jerno.playground.com/examples/panicAndRecover"
 	"jerno.playground.com/examples/receiverPassedByReference"
 	"jerno.playground.com/examples/receiverPassedByValue"
+	"jerno.playground.com/examples/syncWaitGroup"
 	"jerno.playground.com/examples/timeAndDuration"
 )
 
@@ -128,9 +129,16 @@ func main() {
 				timeAndDuration.Run()
 			},
 		},
+		{
+			Icon: "⏳",
+			Name: "Sync WaitGroup",
+			Run: func() {
+				syncWaitGroup.Run()
+			},
+		},
 	}
 
-	userInput := promptUseCase(useCases)
+	userInput := "15" //promptUseCase(useCases)
 	handleUserInput(userInput, useCases)
 }
 

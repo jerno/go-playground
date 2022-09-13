@@ -3,14 +3,17 @@ module jerno.playground.com
 go 1.19
 
 require (
-	github.com/jerno/just-http v0.1.0
+	github.com/jerno/just-http v0.2.0
 	github.com/stretchr/testify v1.8.0
 )
 
+//replace github.com/jerno/just-http => ../just-http
+
 require (
-	github.com/mattn/go-colorable v0.1.9 // indirect
-	github.com/mattn/go-isatty v0.0.14 // indirect
-	golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c // indirect
+	github.com/luciddev13/limit_reader v1.0.1 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.16 // indirect
+	golang.org/x/sys v0.0.0-20220909162455-aba9fc2a8ff2 // indirect
 )
 
 require (
