@@ -30,6 +30,7 @@ type useCase struct {
 }
 
 func main() {
+	useCaseNumber := parseArguments()
 	useCases := []useCase{
 		{
 			Icon: "🌐",
@@ -138,8 +139,13 @@ func main() {
 		},
 	}
 
-	userInput := "15" //promptUseCase(useCases)
-	handleUserInput(userInput, useCases)
+	if useCaseNumber != "" {
+		fmt.Printf("UseCaseNumber received, starting use-case: %s\n", useCaseNumber)
+		handleUserInput(useCaseNumber, useCases)
+	} else {
+		userInput := promptUseCase(useCases)
+		handleUserInput(userInput, useCases)
+	}
 }
 
 func promptUseCase(useCases []useCase) string {
@@ -186,4 +192,19 @@ func printUsecaseTitle(useCase useCase) {
 	fmt.Printf("=  %v%v %v%v  =\n", strings.Repeat(" ", totalNumberOfWhiteSpaces/2), useCase.Icon, useCase.Name, strings.Repeat(" ", totalNumberOfWhiteSpaces-totalNumberOfWhiteSpaces/2))
 	fmt.Printf("=======================================================================\n")
 	fmt.Printf("\n")
+}
+
+func parseArguments() (useCaseNumber string) {
+	argsWithoutProgramName := os.Args[1:]
+
+	if len(argsWithoutProgramName) > 0 {
+		useCaseNumber = argsWithoutProgramName[0]
+	}
+
+	if len(argsWithoutProgramName) > 1 {
+		otherArg := argsWithoutProgramName[1]
+		fmt.Printf("Argument received: %s\n", otherArg)
+	}
+
+	return
 }
