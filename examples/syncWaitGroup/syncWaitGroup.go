@@ -14,6 +14,8 @@ import (
 	"jerno.playground.com/utils"
 )
 
+const SPACING = "  "
+
 func Run() {
 	server := createServer(200)
 	runSyncExample(server)
@@ -24,17 +26,14 @@ func Run() {
 func runSyncExample(server *httptest.Server) {
 	defer utils.StopWatchLogger("Requesting users syncronously")()
 
-	fmt.Printf("Requesting users syncronously...\n")
+	fmt.Printf("\nRequesting users syncronously\n\n")
+
 	for i := 0; i < 5; i++ {
-		userId := fmt.Sprintf("%d", i+1)
-		url := server.URL + "/" + "valid-url/" + userId
-		user, err := getUserDetails(url)
-		if err != nil {
-			fmt.Printf("Error occured while downloading details for user#%s\n", userId)
-			fmt.Println(err)
-			return
-		}
-		fmt.Printf("User name: %v\n", user.UserName)
+		fmt.Printf("[Provider] Generating value...\n")
+		userId := i + 1
+		fmt.Printf("[Provider] Generated value: %v\n", userId)
+
+		sendRequest(server, userId)
 	}
 	fmt.Println("All users downloaded")
 }
@@ -42,39 +41,53 @@ func runSyncExample(server *httptest.Server) {
 func runAsyncExample(server *httptest.Server) {
 	defer utils.StopWatchLogger("Requesting users asyncronously")()
 
-	fmt.Printf("Requesting users asyncronously...\n")
-	userIdChannel := make(chan string)
+	fmt.Printf("\nRequesting users asyncronously\n\n")
+
+	userIdChannel := make(chan int)
 	go func() {
 		for i := 0; i < 5; i++ {
-			userId := fmt.Sprintf("%d", i+1)
+			userId := i + 1
+			fmt.Printf("[Provider] %s | Generated value: %v\n", strings.Repeat(SPACING, userId), userId)
+
+			fmt.Printf("[Provider] %s | Sending value to channel: %v | BLOCKING\n", strings.Repeat(SPACING, userId), userId)
 			userIdChannel <- userId
+			fmt.Printf("[Provider] %s | Value sent to channel: %v | UNBLOCKED\n", strings.Repeat(SPACING, userId), userId)
 		}
 		close(userIdChannel)
 	}()
 
-	getAllUserDetailsWaitGroup(server, userIdChannel)
-	fmt.Println("All users downloaded")
-}
-
-func getAllUserDetailsWaitGroup(server *httptest.Server, userIds <-chan string) {
 	var wg sync.WaitGroup
 
-	for userId := range userIds {
+	fmt.Printf("[Consumer] Reading the channel...\n")
+	for userId := range userIdChannel {
+		fmt.Printf("[Consumer] %s | Value in channel arrived: %v\n", strings.Repeat(SPACING, userId), userId)
 		wg.Add(1)
-		go func(userId string) {
+
+		fmt.Printf("[Consumer] %s | Go-routine defined\n", strings.Repeat(SPACING, userId))
+		go func(userId int) {
+			fmt.Printf("[Consumer] %s | Go-routine runing\n", strings.Repeat(SPACING, userId))
 			defer wg.Done()
-			url := server.URL + "/" + "valid-url/" + userId
-			user, err := getUserDetails(url)
-			if err != nil {
-				fmt.Printf("Error occured while downloading details for user#%s\n", userId)
-				fmt.Println(err)
-				return
-			}
-			fmt.Printf("User name: %v\n", user.UserName)
+			sendRequest(server, userId)
 		}(userId)
 	}
 
+	fmt.Printf("[Consumer] Waiting for WaitGroup...\n")
 	wg.Wait()
+	fmt.Printf("[Consumer] Waiting finished...\n")
+
+	fmt.Println("All users downloaded")
+}
+
+func sendRequest(server *httptest.Server, userId int) {
+	fmt.Printf("[Consumer] %s | Sending request...\n", strings.Repeat(SPACING, userId))
+	url := fmt.Sprintf("%s/valid-url/%d", server.URL, userId)
+	user, err := getUserDetails(url)
+	if err != nil {
+		fmt.Printf("[Consumer] %s | Error occured while downloading details for user#%v\n", strings.Repeat(SPACING, userId), userId)
+		fmt.Println(err)
+		return
+	}
+	fmt.Printf("[Consumer] %s | User name: %v\n", strings.Repeat(SPACING, userId), user.UserName)
 }
 
 func getUserDetails(url string) (*userDetailsResponse, error) {
