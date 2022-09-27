@@ -35,7 +35,7 @@ send_interrupt = false
 kill_delay = 500 # ms
 # Add additional arguments when running binary (bin/full_bin).
 # E.g. args_bin = ["hello", "world"] will run './tmp/playground hello world'
-args_bin = []
+args_bin = ["15"]
 
 [log]
 # Show log time

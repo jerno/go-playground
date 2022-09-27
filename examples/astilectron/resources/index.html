@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Launchpad</title>
+</head>
+
+<body>
+    Hello World
+    <button onclick="openDevTools()">Developer tools</button>
+    <script>
+        // This will wait for the astilectron namespace to be ready
+        document.addEventListener('astilectron-ready', function () {
+            // This will send a message to GO
+            astilectron.sendMessage("hello GO, it's JS", function (message) {
+                console.log("received: " + message)
+            });
+
+            // This will listen to messages sent by GO
+            astilectron.onMessage(function (message) {
+                // Process message
+                if (message === "Are you there, JS?") {
+                    return "Hey GO, I am here.";
+                }
+            });
+        });
+
+        function openDevTools() {
+            astilectron.sendMessage("OPEN_DEV_TOOLS", function (message) {
+                console.log("Dev tool opening requested");
+            });
+        }
+    </script>
+</body>
+
+</html>

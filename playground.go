@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"jerno.playground.com/examples/astilectron"
 	"jerno.playground.com/examples/calculator"
 	"jerno.playground.com/examples/httpClient"
 	"jerno.playground.com/examples/httpServer"
@@ -135,6 +136,13 @@ func main() {
 			Name: "Sync WaitGroup",
 			Run: func() {
 				syncWaitGroup.Run()
+			},
+		},
+		{
+			Icon: "🪟",
+			Name: "Window powered by astilectron",
+			Run: func() {
+				astilectron.Run()
 			},
 		},
 	}

@@ -17,6 +17,8 @@ require (
 )
 
 require (
+	github.com/asticode/go-astikit v0.30.0
+	github.com/asticode/go-astilectron v0.29.0
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/fatih/color v1.13.0
 	github.com/imdario/mergo v0.3.13 // indirect
