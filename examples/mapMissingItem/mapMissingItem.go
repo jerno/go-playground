@@ -19,9 +19,12 @@ func mapMissingItem() {
 
 	fmt.Println("")
 	fmt.Println("Checking with 'CommaOK':")
-	priceA, okA := prices["Apple"]
-	priceB, okB := prices["Banana"]
-	fmt.Printf("The price of Apple is $%d | ok: %v\n", priceA, okA)
-	fmt.Printf("The price of Banana is $%d | ok: %v\n", priceB, okB)
+	checkPriceWithCommaOk(prices, "Apple")
+	checkPriceWithCommaOk(prices, "Banana")
 	fmt.Println("")
+}
+
+func checkPriceWithCommaOk(prices map[string]int, product string) {
+	price, ok := prices[product]
+	fmt.Printf("The price of %s is $%d | ok flag: %v\n", product, price, ok)
 }

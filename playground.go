@@ -10,6 +10,7 @@ import (
 
 	"jerno.playground.com/examples/astilectron"
 	"jerno.playground.com/examples/calculator"
+	"jerno.playground.com/examples/channels"
 	"jerno.playground.com/examples/httpClient"
 	"jerno.playground.com/examples/httpServer"
 	"jerno.playground.com/examples/mapMissingItem"
@@ -139,6 +140,13 @@ func main() {
 			},
 		},
 		{
+			Icon: "📻",
+			Name: "Channels",
+			Run: func() {
+				channels.Run()
+			},
+		},
+		{
 			Icon: "🪟",
 			Name: "Window powered by astilectron",
 			Run: func() {
@@ -195,9 +203,10 @@ func handleUserInput(userInput string, useCases []useCase) {
 }
 
 func printUsecaseTitle(useCase useCase) {
-	totalNumberOfWhiteSpaces := 71 - 2*3 - 2 - 1 - len(useCase.Name)
-	fmt.Printf("=======================================================================\n")
-	fmt.Printf("=  %v%v %v%v  =\n", strings.Repeat(" ", totalNumberOfWhiteSpaces/2), useCase.Icon, useCase.Name, strings.Repeat(" ", totalNumberOfWhiteSpaces-totalNumberOfWhiteSpaces/2))
+	totalNumberOfWhiteSpaces := 71
+	totalNumberOfWhiteSpacesToFill := totalNumberOfWhiteSpaces - 2*3 - 2 - 1 - len(useCase.Name)
+	fmt.Printf("%s\n", strings.Repeat("=", totalNumberOfWhiteSpaces))
+	fmt.Printf("=  %v%v %v%v  =\n", strings.Repeat(" ", totalNumberOfWhiteSpacesToFill/2), useCase.Icon, useCase.Name, strings.Repeat(" ", totalNumberOfWhiteSpacesToFill-totalNumberOfWhiteSpacesToFill/2))
 	fmt.Printf("=======================================================================\n")
 	fmt.Printf("\n")
 }
